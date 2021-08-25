@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <title>MedWeb | Serviço de agendamento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Agendamento medico facilitado" name="description" />
+    <meta content="santon" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/img/logocoracaopreto.png">
+
+    <!-- App css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css" id="light-style" />
+    <link href="assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
+
+    <link href="css/login.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body class="loading" data-layout-config='{"darkMode":false}'>
+    <section class="py-0">
+        <div class="row">
+            <div class="col-md-9 mt-lg-0">
+                <div class="offset-lg-2">
+                    <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark">
+                        <!-- logo -->
+                        <a href="landing.html" class="navbar-brand mr-lg-5">
+                            <img src="assets/img/LogoPreta.png" alt="" class="logo-dark" height="30" />
+                        </a>
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="mdi mdi-menu"></i>
+                        </button>
+
+                        <!-- menus -->
+                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <!-- left menu -->
+                            <ul class="navbar-nav me-auto align-items-center">
+                                <li class="nav-item mx-lg-1">
+                                    <a class="nav-link text-dark" href="">Home</a>
+                                </li>
+                                <li class="nav-item mx-lg-1">
+                                    <a class="nav-link text-dark" href="cadastro.html">Cadastro</a>
+                                </li>
+                                <li class="nav-item mx-lg-1">
+                                    <a class="nav-link text-danger ativo" href="#">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <div class="text-center">
+                        <h1 class="texto-preto font-weight-bold mb-3 mt-3 hero-title py-5">NÃO ESQUEÇA DE CONFERIR<br /> NOSSO APP <span class="texto-vermelho">MOBILE</span>!</h1>
+                        <img src="assets/img/TelaMobile.png" class="search-dropdown" alt="" height="580" style="margin-top: 10px;" margin="0px" padding="0" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-lg-0 text-center align-items-center py-5" style="background-color: #000; ">
+                <i class="maintenance-icon text-white mb-2" style="background-color: #fff; height: 200px; width: 200px;">
+                    <img src="assets/img/logocoracaopreto.png" class="search-dropdown" alt="" height="200"
+                        style="margin-top: 10px;" margin="0px" padding="0" />
+                </i>
+                <h1 class="text-white py-1">Login</h1>
+
+                <form method="get" id="formLog">
+                    <div class="mb-3 py-1" style="margin-right: 30px; margin-top: 70px; text-align: left">
+                        <label class="form-label texto-branco font-weight-bold" style="margin: 0 0 0 10px; font-size: 20px;">Email</label>
+                        <input type="email" id="login-email" name="example-email" class="form-control" placeholder="" style="margin: 10px 10px 0px 10px;">
+                    </div>
+                    <div class="mb-3" style="margin-right: 30px; text-align: left; padding: 0;">
+                        <label class="form-label texto-branco font-weight-bold" style="margin: 0 0 0 10px; font-size: 20px;">Senha</label>
+                        <input type="password" id="login-senha" name="example-password" class="form-control" placeholder="" style="margin: 10px 10px 10px 10px;">
+                    </div>
+                    <div class="mb-3" style="margin-right: 30px; text-align: right">
+                        <a class="form-label texto-vermelho font-weight-bold" style="font-size: 15px; cursor: pointer; text-decoration: underline;">Esqueceu sua
+                            senha?</a>
+                    </div>
+
+                    <div class="mb-3 py-4" style="align-content: center;">
+                        <a type="button" class="btn btn-dark" style="width: 130px; margin-right: 15px;" href="../cadastro.html">Cadastrar</a>
+                        <input type="submit" class="btn btn-light" style="width: 130px; margin-left: 30px;" value="Entrar">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- bundle -->
+    <script src="assets/js/vendor.min.js"></script>
+    <script src="assets/js/app.min.js"></script>
+
+    <!-- Configuração Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+
+    <script src="Firebase/firebase_config.js"></script>
+    <!-- Fim da config Firebase -->
+
+    <script>
+        $("#formLog").submit(function(event) {
+            let email = $("#login-email").val();
+            let password = $("#login-senha").val();
+
+            event.preventDefault();
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    var user = userCredential.user;
+                    $(location).attr('href', `../index.html?uid=${user.uid}`);
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log("Error code: " + errorCode + "\nError Message: " + errorMessage);
+                });
+        });
+    </script>
+</body>
+
+</html>

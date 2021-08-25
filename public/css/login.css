@@ -1,0 +1,45 @@
+.texto-preto {
+    color: #000000;
+}
+
+.texto-branco {
+    color: #ffffff;
+}
+
+.texto-rosa {
+    color: #900C3F;
+    font-weight: bold;
+}
+
+.texto-vermelho {
+    color: #df1414;
+}
+
+.bg-vinho {
+    background-color: #5B0828;
+}
+
+.bg-preto {
+    background-color: #000000;
+}
+
+.negrito {
+    font-weight: bold;
+}
+
+.consultas {
+    background-color: #fff;
+    color: #000;
+}
+
+.margin-right-50 {
+    margin-right: 50px;
+}
+
+.flip-horizontally {
+    transform: scaleX(-1);
+}
+
+.ativo {
+    color: #df1414;
+}

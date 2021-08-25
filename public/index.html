@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <script src="configs/jquery.js"></script>
+</head>
+
+<body>
+    <p>Ola bem vindo.</p>
+    <p id="user">Seu user id é: </p>
+
+    <script>
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var data = url.searchParams.get("uid"); //pega o value
+        console.log(data);
+        $("#user").append(`<i>${data}</i>`);
+    </script>
+</body>
+
+</html>

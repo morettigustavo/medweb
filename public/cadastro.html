@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <title>MedWeb | Serviço de agendamento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Agendamento medico facilitado" name="description" />
+    <meta content="santon" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/img/logocoracaopreto.png">
+
+    <!-- App css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css" id="light-style" />
+    <link href="assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
+
+    <link href="css/cadastro.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="loading" data-layout-config='{"darkMode":false}'>
+    <section class="py-0">
+        <div class="row">
+            <div class="col-md-12 text-center align-items-center py-2" style="background-color: #000; ">
+                <div class="offset-lg-2">
+                    <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark">
+                        <!-- logo -->
+                        <a href="landing.html" class="navbar-brand mr-lg-5">
+                            <img src="assets/img/LogoBranca.png" alt="" class="logo-dark" height="30" />
+                        </a>
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="mdi mdi-menu"></i>
+                        </button>
+
+                        <!-- menus -->
+                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+                            <!-- left menu -->
+                            <ul class="navbar-nav me-auto align-items-center">
+                                <li class="nav-item mx-lg-1">
+                                    <a class="nav-link text-light" href="">Home</a>
+                                </li>
+
+                                <li class="nav-item mx-lg-1">
+                                    <a class="nav-link text-danger ativo" href="#">Cadastro</a>
+                                </li>
+
+                                <li class="nav-item mx-lg-1">
+                                    <a class="nav-link text-light" href="login.html">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+
+                <div class="text-center py-5 align-items-center">
+                    <i class="maintenance-icon text-white mb-2" style="background-color: #fff; height: 200px; width: 200px;">
+                        <img src="assets/img/logocoracaopreto.png" class="search-dropdown" alt="" height="200"
+                            style="margin-top: 10px;" margin="0px" padding="0" />
+                    </i>
+
+                    <h1 class="text-white py-1">Cadastro</h1>
+
+                    <form action="post" id="formCad">
+
+                        <div class="mb-3 py-1  align-items-center" style="margin-right: 30px; margin-top: 70px; text-align: left; width: 400px; margin: auto ;">
+                            <label class="form-label texto-branco font-weight-bold" style="margin: 0 0 0 10px; font-size: 15px; height: 40px;">Email</label>
+                            <input type="email" id="cadastro-email" name="cadastro-email" class="form-control" placeholder="" style="margin: 10px 10px 0px 10px;">
+                        </div>
+
+                        <div class="mb-3 " style="margin-right: 30px; text-align: left; width: 400px; margin: auto ;">
+                            <label class="form-label texto-branco font-weight-bold" style="margin: 0 0 0 10px; font-size: 15px; height: 40px;">Senha</label>
+                            <input type="senha" id="cadastro-senha" name="cadastro-senha" class="form-control" placeholder="" style="margin: 10px 10px 0px 10px;">
+                        </div>
+
+                        <div class="mb-3 py-4">
+                            <input type="submit" value="Cadastrar" class="btn btn-light" style="width: 130px;">
+                        </div>
+
+                    </form>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- bundle -->
+    <script src="assets/js/vendor.min.js"></script>
+    <script src="assets/js/app.min.js"></script>
+
+    <!-- Configuração Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+
+    <script src="Firebase/firebase_config.js"></script>
+    <!-- Fim da config Firebase -->
+
+    <script>
+        $("#formCad").submit(function(event) {
+            let email = $("#cadastro-email").val();
+            let password = $("#cadastro-senha").val();
+
+            event.preventDefault();
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    var user = userCredential.user;
+                    $(location).attr('href', `../public/index.html?uid=${user.uid}`);
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log("Error code: " + errorCode + "\nError Message: " + errorMessage);
+                });
+        });
+    </script>
+</body>
+
+</html>
