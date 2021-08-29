@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <script src="configs/jquery.js"></script>
+    <script src="configs/jquery_serialize_json.js"></script>
+</head>
+
+<body>
+    <div id="principal">
+        <form action="#" method="get" id="formEdit">
+            <p>Nome:<br><input type="text" name="nome" id="nome"></p>
+            <p>Email:<br><input type="email" name="email" id="email" readonly="true"></p>
+            <!-- <p>Convênio <input type="button" value="+" name="adcConvenio" id="adcConvenio"></p> -->
+            <p>Data nascimento:<br><input type="date" name="data_nasc" id="data_nasc"></p>
+            <input type="submit" value="Salvar e Sair">
+        </form>
+    </div>
+
+    <!-- Configuração Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+
+    <script src="Firebase/firebase_config.js"></script>
+    <!-- Fim da config Firebase -->
+
+    <script>
+        var db = firebase.firestore();
+        var auth = firebase.auth();
+
+        
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                db.collection("usuarios").doc(firebase.auth().currentUser.uid).get().then((doc) => {
+                    if(doc.exists){
+                        console.log(doc)
+                        console.log(doc.data().nome);
+                        $("#nome").val(doc.data().nome);
+                        $("#email").val(doc.data().email);
+                        $("#data_nasc").val(doc.data().data_nasc);
+                    }else{
+                        $("#email").val(firebase.auth().currentUser .email);
+                    }
+                    
+                });
+            } else {
+                $(location).attr('href', "../login.html");
+            }
+        });
+        
+        $("#formEdit").submit(function(event) {
+            event.preventDefault();
+
+            let nome = $("#nome").val();
+            let data = $("data_nasc").val();
+            console.log()
+            db.collection("usuarios").doc(firebase.auth().currentUser.uid).set($("#formEdit").serializeJSON())
+            .then((res)=>{
+                console.log("Usuário Cadastrado com sucesso");
+                $(location).attr('href', "../index.html");
+            }).catch((err) =>{
+                console.log("Erro ao cadastrar ", err);
+            });
+            // var user = db.collection("usuarios").get().then((res) => {
+            //     console.log(res);
+            // });
+
+            // db.collection("usuarios").get().then((res) => {
+            //     res.forEach((doc) => {
+            //         // doc.data() is never undefined for query doc snapshots
+            //         console.log(doc.id, " => ", doc.data());
+            //     });
+            // });
+
+            
+        });
+    </script>
+</body>
+
+</html>

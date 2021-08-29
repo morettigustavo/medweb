@@ -10,15 +10,42 @@
 </head>
 
 <body>
-    <p>Ola bem vindo.</p>
+    <p id="bemVindo">Ola bem vindo. </p>
     <p id="user">Seu user id é: </p>
 
+    <a href="login.html">Login</a><br>
+    <a href="perfil.html">Perfil</a>
+
+    <input type="button" value="Deslogar" id="logoff">
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+
+    <script src="Firebase/firebase_config.js"></script>
+
     <script>
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        var data = url.searchParams.get("uid"); //pega o value
-        console.log(data);
-        $("#user").append(`<i>${data}</i>`);
+        let db = firebase.firestore();
+        firebase.auth().onAuthStateChanged(function(user) {
+            if(user){
+                db.collection("usuarios").doc(firebase.auth().currentUser.uid).get().then((doc) => {
+                    if(doc.exists){
+                        $("#bemVindo").append(doc.data().nome);
+                        $("#user").append(firebase.auth().currentUser.uid);
+                    }else{
+                        window.alert("Você ainda não tem um perfil? Crie agora mesmo");
+                        $(location).attr('href', "../perfil.html");
+                    }
+                        
+                });
+            }else{
+                $(location).attr('href', "../login.html");
+            }
+        });
+
+        $("#logoff").click(()=>{
+            firebase.auth().signOut()
+        });
     </script>
 </body>
 

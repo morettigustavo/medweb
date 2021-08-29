@@ -102,20 +102,29 @@
 
     <script>
         $("#formLog").submit(function(event) {
+            event.preventDefault();
             let email = $("#login-email").val();
             let password = $("#login-senha").val();
 
-            event.preventDefault();
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    var user = userCredential.user;
-                    $(location).attr('href', `../index.html?uid=${user.uid}`);
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                .then(() => {
+                    return firebase.auth().signInWithEmailAndPassword(email, password)
+                        .then((userCredential) => {
+                            var user = userCredential.user;
+                            $(location).attr('href', "../index.html");
+                        })
+                        .catch((error) => {
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+                            console.log("Error code: " + errorCode + "\nError Message: " + errorMessage);
+                        });
                 })
                 .catch((error) => {
+                    // Handle Errors here.
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    console.log("Error code: " + errorCode + "\nError Message: " + errorMessage);
                 });
+
         });
     </script>
 </body>
